@@ -1,0 +1,1 @@
+# smartplaces-js
