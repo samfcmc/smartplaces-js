@@ -1,0 +1,22 @@
+{
+  "name": "smartplaces-js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/samfcmc/smartplaces-js",
+  "authors": [
+    "Samuel Coelho <samuelfcmc@gmail.com>"
+  ],
+  "description": "Allow your web application to get when the Smart Places Mobile app got objects around you from nearby BLE beacons.",
+  "main": "smartplaces.js",
+  "keywords": [
+    "beacons",
+    "smartplaces"
+  ],
+  "license": "GPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
