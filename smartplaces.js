@@ -1,14 +1,56 @@
 /*
  * Parse classes
  */
-var Tag = Parse.Object.extend('Tag');
+var Tag = Parse.Object.extend('Tag', {
+  data: function() {
+    return this.get('data');
+  },
+  beacon: function() {
+    return this.get('beacon');
+  },
+  setData: function(data) {
+    this.set('data', data);
+  },
+  setBeacon: function(beacon) {
+    this.set('beacon', beacon);
+  }
+});
+
 var SmartPlaceInstance = Parse.Object.extend('SmartPlaceInstance');
+var Beacon = Parse.Object.extend('Beacon', {
+  uuid: function() {
+    return this.get('uuid');
+  },
+  major: function() {
+    return this.get('major');
+  },
+  minor: function() {
+    return this.get('minor');
+  }
+});
 
 window.SmartPlaces = {
-  init: function(id) {
+  smartPlaceInstance: {},
+  init: function(id, options) {
     Parse.initialize("TnStNm2KgQHo0YxDKF5MEIkSC4VoNQD1sPfxtv7e",
       "8OmJ4lLF4xWfr8AvIPYJrcBbx6UwxI0bd8D9uYGT");
-    this.instanceId = id;
+    var query = new Parse.Query(SmartPlaceInstance);
+    var self = this;
+    query.get(id, {
+      success: function(smartPlaceInstance) {
+        self.smartPlaceInstance = smartPlaceInstance;
+        var success = options.success;
+        if(success) {
+          if(typeof(success) == 'function') {
+            success(self.smartPlaceInstance);
+          }
+          else {
+            throw 'success callback must be a function';
+          }
+        }
+      },
+      error: options.error
+    });
   },
   hello: function() {
     alert("hello, just testing");
@@ -27,14 +69,27 @@ window.SmartPlaces = {
   onBeaconsScanned: function(callback) {
     this.beaconsScanned = callback;
   },
-  getTags: function(success, error) {
+  getTags: function(options) {
     var query = new Parse.Query(Tag);
-    var instance = new SmartPlaceInstance();
-    instance.id = this.instanceId;
+    var instance = this.smartPlaceInstance;
     query = query.equalTo('smartPlaceInstance', instance);
-    query.find({
-      success: success,
-      error: error
-    });
+    query = query.include('beacon');
+    query.find(options);
+  },
+  getBeacon: function(beaconInfo, options) {
+    var query = new Parse.Query(Beacon);
+    query = query.equalTo('uuid', beaconInfo.uuid);
+    query = query.equalTo('major', beaconInfo.major);
+    query = query.equalTo('minor', beaconInfo.minor);
+    query.first(options);
+  },
+  associateTag: function(beacon, tagData, options) {
+    var tag = new Tag();
+    var instance = this.smartPlaceInstance;
+    tag.save({
+      beacon: beacon,
+      data: tagData,
+      smartPlaceInstance: instance
+    }, options);
   }
 };
