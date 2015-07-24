@@ -94,13 +94,14 @@ module.exports = function(grunt) {
       options: {
         files: ['package.json', 'bower.json'],
         updateConfigs: ['pkg'],
-        commit: false,
+        commit: true,
         commitMessage: 'Release v%VERSION%',
-        commitFiles: ['package.json'],
-        createTag: false,
+        commitFiles: ['-a'],
+        createTag: true,
         tagName: 'v%VERSION%',
         tagMessage: 'Version %VERSION%',
-        push: false,
+        pushTo: 'origin',
+        push: true
       }
     }
   });
