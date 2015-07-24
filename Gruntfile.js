@@ -7,43 +7,62 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-config');
+  grunt.loadNpmTasks('grunt-bump');
 
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    concat: {
+    srcPath: 'src',
+    buildPath: 'build',
+    distPath: 'dist',
+    moduleName: 'smartplaces',
+    moduleFile: '<%= moduleName %>.js',
+    moduleMinName: 'smartplaces.min',
+    moduleMinFile: '<%= moduleMinName %>.js',
+    mainName: 'main',
+    mainFile: '<%= mainName %>.js',
+    bundlePath: 'build',
+    browserifyDebug: '<%= grunt.config.get("browserifyDebug") %>',
+    destPath: '<%= grunt.config.get("destPath") %>',
+    config: {
+      dev: {
+        options: {
+          variables: {
+            browserifyDebug: true,
+            destPath: 'build'
+          }
+        }
+      },
       dist: {
-        src: ['lib/parse-1.5.0.js', 'smartplaces.js'],
-        dest: 'tmp/smartplaces.js'
+        options: {
+          variables: {
+            browserifyDebug: false,
+            destPath: 'dist'
+          }
+        }
+      }
+    },
+    browserify: {
+      bundle: {
+        src: '<%= srcPath %>/<%= mainFile %>',
+        dest: '<%= destPath %>/<%= moduleFile %>',
+        options: {
+          browserifyOptions:  {
+            debug: '<%= browserifyDebug %>'
+          }
+        }
       }
     },
     uglify: {
       dist: {
         files: {
-          'dist/smartplaces.js': ['tmp/smartplaces.js']
+          '<%= destPath %>/<%= moduleMinFile %>': ['<%= destPath %>/<%= moduleFile %>']
         }
       }
     },
-    copy: {
-      dist: {
-        cwd: 'tmp',
-        src: '**',
-        dest: 'dist/',
-        expand: true,
-        filter: 'isFile'
-      },
-      build: {
-        cwd: 'tmp',
-        src: '**',
-        dest: 'build/',
-        expand: true,
-        filter: 'isFile'
-      },
-    },
     clean: {
-      tmp: {
-        src: ['tmp']
-      },
       dist: {
         src: ['dist']
       },
@@ -59,19 +78,41 @@ module.exports = function(grunt) {
       },
     },
     watch: {
-      dev: {
-        files: ['**/*.html', '**/*.js'],
+      html: {
+        files: ['**/*.html'],
         options: {
           livereload: true,
         },
       },
+      js: {
+        files: ['src/**/*.js'],
+        options: {
+          livereload: true
+        },
+        tasks: ['dev']
+      }
     },
+    bump: {
+      options: {
+        files: ['package.json', 'bower.json'],
+        updateConfigs: ['pkg'],
+        commit: false,
+        commitMessage: 'Release v%VERSION%',
+        commitFiles: ['package.json'],
+        createTag: false,
+        tagName: 'v%VERSION%',
+        tagMessage: 'Version %VERSION%',
+        push: false,
+      }
+    }
   });
 
   // Default task(s).
   grunt.registerTask('default', ['dev']);
-  grunt.registerTask('dev', ['concat:dist', 'copy:build', 'clean:tmp']);
-  grunt.registerTask('server', ['connect:server', 'watch']);
-  grunt.registerTask('dist', ['concat:dist', 'uglify:dist', 'copy:dist', 'clean:tmp']);
+  grunt.registerTask('common', ['browserify:bundle']);
+  grunt.registerTask('dev', ['config:dev', 'common']);
+  grunt.registerTask('server', ['dev', 'connect:server', 'watch']);
+  grunt.registerTask('dist', ['config:dist', 'common', 'uglify:dist']);
+  grunt.registerTask('release', ['dist', 'bump']);
 
 };

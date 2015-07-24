@@ -15,7 +15,7 @@
     "beacons",
     "smartplaces"
   ],
-  "license": "GPL",
+  "license": "MIT",
   "ignore": [
     "node_modules",
     "bower_components",
