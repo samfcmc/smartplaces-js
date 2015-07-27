@@ -1,7 +1,7 @@
 {
   "name": "smartplaces-js",
   "description": "Allow your web application to get when the Smart Places Mobile app got objects around you from nearby BLE beacons.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": "https://github.com/samfcmc/smartplaces-js",
   "license": "MIT",
   "devDependencies": {
