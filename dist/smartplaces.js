@@ -9832,7 +9832,7 @@ process.umask = function() { return 0; };
         }, options);
       },
       deleteTag: function(tag, options) {
-        tag.delete(options);
+        tag.destroy(options);
       }
     };
   };
