@@ -93,6 +93,11 @@
           data: tagData,
           smartPlaceInstance: instance
         }, options);
+      },
+      updateTag: function(tag, data, options) {
+        tag.save({
+          data: data
+        }, options);
       }
     };
   };

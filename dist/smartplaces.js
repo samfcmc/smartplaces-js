@@ -9825,6 +9825,11 @@ process.umask = function() { return 0; };
           data: tagData,
           smartPlaceInstance: instance
         }, options);
+      },
+      updateTag: function(tag, data, options) {
+        tag.save({
+          data: data
+        }, options);
       }
     };
   };
