@@ -33,7 +33,7 @@
 
     return {
       smartPlaceInstance: {},
-      init: function(id, options) {
+      init: function(id) {
         Parse.initialize("TnStNm2KgQHo0YxDKF5MEIkSC4VoNQD1sPfxtv7e",
           "8OmJ4lLF4xWfr8AvIPYJrcBbx6UwxI0bd8D9uYGT");
         var query = new Parse.Query(SmartPlaceInstance);
@@ -41,18 +41,18 @@
         query.get(id, {
           success: function(smartPlaceInstance) {
             self.smartPlaceInstance = smartPlaceInstance;
-            var success = options.success;
-            if(success) {
-              if(typeof(success) == 'function') {
-                success(self.smartPlaceInstance);
-              }
-              else {
-                throw 'success callback must be a function';
-              }
-            }
+            self.didInit(smartPlaceInstance);
           },
-          error: options.error
+          error: function(error) {
+            alert('Cannot initialize SmartPlaces ' + error);
+          }
         });
+      },
+      didInit: function() {
+        throw 'You need to define a callback for initialization. Call SmartPlaces.onInit(callback)';
+      },
+      onInit: function(callback) {
+        this.didInit = callback;
       },
       hello: function() {
         alert("hello, just testing");
