@@ -100,7 +100,7 @@
         }, options);
       },
       deleteTag: function(tag, options) {
-        tag.delete(options);
+        tag.destroy(options);
       }
     };
   };
