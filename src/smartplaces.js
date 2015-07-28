@@ -98,6 +98,9 @@
         tag.save({
           data: data
         }, options);
+      },
+      deleteTag: function(tag, options) {
+        tag.delete(options);
       }
     };
   };
