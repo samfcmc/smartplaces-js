@@ -28,6 +28,12 @@
       },
       minor: function() {
         return this.get('minor');
+      },
+      name: function() {
+        return this.get("name");
+      },
+      icon: function() {
+        return this.get("icon");
       }
     });
 
