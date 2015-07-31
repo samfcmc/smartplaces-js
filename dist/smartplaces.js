@@ -9760,6 +9760,12 @@ process.umask = function() { return 0; };
       },
       minor: function() {
         return this.get('minor');
+      },
+      name: function() {
+        return this.get("name");
+      },
+      icon: function() {
+        return this.get("icon");
       }
     });
 
