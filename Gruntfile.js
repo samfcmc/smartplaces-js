@@ -56,7 +56,7 @@ module.exports = function(grunt) {
     uglify: {
       dist: {
         files: {
-          '<%= destPath %>/<%= moduleMinFile %>': ['<%= destPath %>/<%= moduleFile %>']
+          '<%= destPath %>/<%= moduleFile %>': ['<%= destPath %>/<%= moduleFile %>']
         }
       }
     },
