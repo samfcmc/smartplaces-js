@@ -1,8 +1,10 @@
 Smart Places JS
 ===============================
+This is related with my master thesis.
 Allow your web application to get when the Smart Places Mobile app got tags around you from nearby BLE beacons.
 
 # Installation
+You have two ways of getting this library
 
 ## Manually
 * Get ```dist/smartplaces.js``` file and include it in your web application
@@ -13,6 +15,10 @@ bower install smartplaces-js --save
 ```
 
 # Usage:
+
+First you you will need some ibeacons and register them in the backend.
+Then, you will also need to register your Smart Place and the url for the owners and for users. Still, there is no easy way of getting this done. There is no application. We need to put the data manually in the backend.
+
 ## In owner's apps
 You can use this library to create the app that owners use to tag the different objects in a given smart place.
 The mobile app will call a function to initialize the library.
@@ -137,5 +143,9 @@ SmartPlaces.onTagFound(function(tag) {
 ```
 
 Now, you can use the tag object to do whatever you want.
+
+You can check two examples of apps using this library:
+* [Restaurant app](https://github.com/samfcmc/SLOC-API-and-RestApp)
+* [Smart Museum](https://github.com/samfcmc/smart-museum)
 
 Have fun creating Smart Places and empowering your web applicatons :)
